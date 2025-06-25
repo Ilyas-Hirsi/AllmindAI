@@ -1,0 +1,296 @@
+.platform-section {
+  background: #f4f8fb;
+  padding: 0 0 4rem 0;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+.platform-why {
+  display: flex;
+  flex-direction: row;
+  background: #3a4956;
+  color: #fff;
+  padding: 4rem 0 4rem 0;
+  max-width: 1400px;
+  margin: 0 auto;
+  border-radius: 0 0 0 0;
+}
+
+.platform-why-left {
+  flex: 1.2;
+
+  padding: 0 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.platform-why-label {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #eaf2ff;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+
+.platform-why-title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+  font-family: 'Merriweather', serif;
+}
+
+.platform-why-desc {
+  font-size: 1.15rem;
+  color: #eaf2ff;
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+.platform-why-right {
+  flex: 1.8;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem 2rem;
+  align-items: left;
+  background: #f4f8fb;
+  color: #222;
+  padding: 2.5rem 3rem;
+
+}
+
+.platform-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+
+.platform-feature-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.platform-feature-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.platform-feature-desc {
+  font-size: 1rem;
+  color: #222;
+  line-height: 1.5;
+}
+.PlatformImage {
+    max-width: 100px;
+    max-height: auto;
+    width: 50%;
+    height: auto;
+
+}
+.platform-perspectives {
+  background: #eaf2ff;
+  margin: 0 auto;
+  max-width: 1400px;
+  border-radius: 0 0 0 0;
+  padding: 4rem 0 4rem 0;
+  margin-top: 0;
+}
+.platform-perspectives-surtitle {
+  font-size: 0.9rem;
+}
+
+.platform-perspectives-title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-family: 'Merriweather', serif;
+  font-weight: 800;
+  margin-bottom: 2.5rem;
+  color: #222;
+}
+
+.platform-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.platform-tab {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #222;
+  text-decoration: none;
+  padding-bottom: 0.25rem;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s, color 0.2s;
+  cursor: pointer;
+}
+.platform-tab:hover {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1e59fd;
+  border-bottom: 2.5px solid #1e59fd;
+  padding-bottom: 0.25rem;
+  transition: border-color 0.2s, color 0.2s;
+  cursor: pointer;
+}
+
+.platform-tab.active {
+  color: #1e59fd;
+  border-bottom: 2.5px solid #1e59fd;
+}
+
+.platform-perspectives-content {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: flex-start;
+}
+
+.platform-perspectives-left {
+  flex: 1.1;
+  padding-left: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.platform-perspectives-subtitle {
+  font-family: sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #222;
+  margin-top: 5rem;
+  margin-bottom: -0.5rem;
+}
+
+.platform-perspectives-desc {
+  font-size: 0.9rem;
+  color: #222;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.platform-learn-more {
+  color: #1e59fd;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1.05rem;
+  transition: color 0.2s;
+}
+
+.platform-learn-more:hover {
+  color: #1746b0;
+  text-decoration: underline;
+}
+
+.platform-perspectives-right {
+  flex: 1.9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.platform-perspectives-image {
+  width: 100%;
+  max-width: 520px;
+  min-height: 320px;
+  background: transparent;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.platform-dashboard-placeholder {
+  background-color: transparent;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.platform-dashboard-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Clear floats for the section */
+.platform-section::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@media (max-width: 1100px) {
+  .platform-why-left, .platform-why-right {
+    float: none;
+    max-width: 100%;
+    margin: 0 auto;
+    border-radius: 0;
+    min-height: unset;
+    padding: 2rem 1rem;
+  }
+  .platform-why-right {
+    grid-template-columns: 1fr;
+    gap: 2rem 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .platform-why-left, .platform-why-right {
+    padding: 1rem 0.5rem;
+  }
+  .platform-why-right {
+    grid-template-columns: 1fr;
+    gap: 1.5rem 0;
+  }
+  .platform-perspectives-image {
+    min-height: 180px;
+    max-width: 100%;
+  }
+}
+
+.get-started {
+  background: rgb(3, 3, 101);
+  color: white;
+  padding: 4rem 2rem;
+  text-align: center;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.get-started h3 {
+  font-size: 2.5rem;
+  font-family: 'Merriweather', serif;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.get-started p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto 2.5rem auto;
+  font-weight: 400;
+}
+
+.get-started p b {
+  font-weight: 700;
+}
