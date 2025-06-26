@@ -124,7 +124,7 @@ export function Testimonials() {
           />
         ))}
       </div>
-      <h2 className="customer-review-heading">What our customers are saying</h2>
+      <center><h2 className="customer-review-heading">What our customers are saying</h2></center>
       <div className="customer-review-flex">
         <div className="customer-image">
           <img src="https://www.alpha-sense.com/wp-content/uploads/2024/10/winter-2025-badges-1.png" alt="Badges" />

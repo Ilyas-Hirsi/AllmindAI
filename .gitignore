@@ -1,0 +1,13 @@
+components/assets/apikey
+/node_modules
+/.next
+.dockerignore
+docker-compose.yml
+Dockerfile
+go.mod 
+go.sum 
+next-env.d.ts
+package.json
+package-lock.json
+tsconfig.json 
+start.sh 

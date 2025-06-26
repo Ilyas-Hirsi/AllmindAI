@@ -80,7 +80,7 @@ export function Platform() {
         </div>
       </div>
       <div className="platform-perspectives">
-        <h3 className="platform-perspectives-surtitle"> Platform</h3>
+        <center><h2 className="platform-perspectives-surtitle"> Platform</h2></center>
         <h2 className="platform-perspectives-title">All the perspectives you need in one place</h2>
         <div className="platform-tabs">
           {tabData.map((tab, index) => (

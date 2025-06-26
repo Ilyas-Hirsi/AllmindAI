@@ -14,35 +14,83 @@ export function Navbar() {
   const ws = useRef<WebSocket | null>(null);
   const [wsConnected, setWsConnected] = useState(false);
 
+  // Get WebSocket URL - use deployed URL in production, localhost in development
+  const getWebSocketUrl = () => {
+    if (typeof window !== 'undefined') {
+      // If we're in the browser, check if we're on localhost
+      const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      if (isLocalhost) {
+        return 'ws://localhost:8080/ws';
+      } else {
+        // For Cloud Run deployment, always use WSS (secure WebSocket)
+        // Cloud Run services are always served over HTTPS
+        const host = window.location.host;
+        return `wss://${host}/ws`;
+      }
+    }
+    // Fallback for server-side rendering
+    return 'ws://localhost:8080/ws';
+  };
+
   // WebSocket setup and teardown
   useEffect(() => {
     if (showPanel && !ws.current) {
-      ws.current = new WebSocket('ws://localhost:8080/ws');
-      ws.current.onopen = () => setWsConnected(true);
-      ws.current.onclose = () => setWsConnected(false);
-      ws.current.onerror = () => setWsConnected(false);
-      ws.current.onmessage = (event) => {
-        // Handle incoming messages from backend
-        try {
-          const data = JSON.parse(event.data);
-          if (data.error) {
-            setChat((prev) => [...prev, { role: 'model', text: data.error }]);
-            return;
+      const wsUrl = getWebSocketUrl();
+      console.log('Connecting to WebSocket:', wsUrl);
+      console.log('Current location:', window.location.href);
+      console.log('Host:', window.location.host);
+      console.log('Protocol:', window.location.protocol);
+      console.log('Is localhost:', window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+      
+      try {
+        ws.current = new WebSocket(wsUrl);
+        ws.current.onopen = () => {
+          console.log('WebSocket connected successfully');
+          setWsConnected(true);
+        };
+        ws.current.onclose = (event) => {
+          console.log('WebSocket disconnected:', event.code, event.reason);
+          console.log('Close event details:', event);
+          setWsConnected(false);
+        };
+        ws.current.onerror = (error) => {
+          console.error('WebSocket error:', error);
+          console.error('WebSocket readyState:', ws.current?.readyState);
+          setWsConnected(false);
+        };
+        ws.current.onmessage = (event) => {
+          console.log('Received message:', event.data);
+          // Handle incoming messages from backend
+          try {
+            const data = JSON.parse(event.data);
+            if (data.error) {
+              console.error('Server error:', data.error);
+              setChat((prev) => [...prev, { role: 'model', text: `Error: ${data.error}` }]);
+              return;
+            }
+            if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+              setChat((prev) => [...prev, { role: 'model', text: data.candidates[0].content.parts[0].text }]);
+            } else {
+              setChat((prev) => [...prev, { role: 'model', text: event.data }]);
+            }
+          } catch (parseError) {
+            console.error('Failed to parse message:', parseError);
+            console.error('Raw message data:', event.data);
+            setChat((prev) => [...prev, { role: 'model', text: `Received: ${event.data}` }]);
           }
-          if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
-            setChat((prev) => [...prev, { role: 'model', text: data.candidates[0].content.parts[0].text }]);
-          } else {
-            setChat((prev) => [...prev, { role: 'model', text: event.data }]);
-          }
-        } catch {
-          setChat((prev) => [...prev, { role: 'model', text: event.data }]);
-        }
-      };
+        };
+      } catch (error) {
+        console.error('Failed to create WebSocket:', error);
+        setWsConnected(false);
+        setChat((prev) => [...prev, { role: 'model', text: `Connection error: ${error}` }]);
+      }
     }
     return () => {
       if (!showPanel && ws.current) {
+        console.log('Closing WebSocket connection');
         ws.current.close();
         ws.current = null;
+        setWsConnected(false);
       }
     };
   }, [showPanel]);

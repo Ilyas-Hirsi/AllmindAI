@@ -8,6 +8,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
+	"strings"
 	"context"
 	"cloud.google.com/go/bigtable"
 	"time"
@@ -80,12 +82,17 @@ func writeMessageToBigtable(sessionID, role, text string) error {
 }
 
 func geminiWSHandler(w http.ResponseWriter, r *http.Request) {
+	log.Printf("WebSocket request received: %s %s", r.Method, r.URL.Path)
+	log.Printf("Headers: %v", r.Header)
+	
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println("WebSocket upgrade error:", err)
 		return
 	}
 	defer conn.Close()
+	
+	log.Println("WebSocket connection established")
 
 	sessionID := uuid.New().String()
 	for {
@@ -94,13 +101,17 @@ func geminiWSHandler(w http.ResponseWriter, r *http.Request) {
 			log.Println("Read error:", err)
 			break
 		}
+		log.Printf("Received message: %s", string(msg))
+		
 		var req GeminiRequest
 		if err := json.Unmarshal(msg, &req); err != nil {
+			log.Println("JSON unmarshal error:", err)
 			conn.WriteMessage(websocket.TextMessage, []byte(`{"error":"Invalid request"}`))
 			continue
 		}
 		apiKey, err := getAPIKey()
 		if err != nil {
+			log.Println("API key error:", err)
 			conn.WriteMessage(websocket.TextMessage, []byte(`{"error":"API key error"}`))
 			continue
 		}
@@ -120,17 +131,20 @@ func geminiWSHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		body, err := json.Marshal(geminiReq)
 		if err != nil {
+			log.Println("JSON marshal error:", err)
 			conn.WriteMessage(websocket.TextMessage, []byte(`{"error":"Failed to encode request"}`))
 			continue
 		}
 		resp, err := http.Post(geminiAPIURL+apiKey, "application/json", bytes.NewReader(body))
 		if err != nil {
+			log.Println("Gemini API request error:", err)
 			conn.WriteMessage(websocket.TextMessage, []byte(`{"error":"Gemini API error"}`))
 			continue
 		}
 		respBody, err := ioutil.ReadAll(resp.Body)
 		resp.Body.Close()
 		if err != nil {
+			log.Println("Gemini API response read error:", err)
 			conn.WriteMessage(websocket.TextMessage, []byte(`{"error":"Failed to read Gemini response"}`))
 			continue
 		}
@@ -149,6 +163,60 @@ func geminiWSHandler(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Current conversation history: %+v\n", history)
 		conn.WriteMessage(websocket.TextMessage, respBody)
 	}
+}
+
+// Serve static files from Next.js build
+func staticFileHandler(w http.ResponseWriter, r *http.Request) {
+	log.Printf("Static file request: %s %s", r.Method, r.URL.Path)
+	
+	// Remove leading slash
+	path := strings.TrimPrefix(r.URL.Path, "/")
+
+	// Correctly map /_next/static/* to .next/static/*
+	if strings.HasPrefix(path, "_next/static/") {
+		staticPath := filepath.Join(".next", "static", strings.TrimPrefix(path, "_next/static/"))
+		if _, err := os.Stat(staticPath); err == nil {
+			log.Printf("Serving Next.js static file: %s", staticPath)
+			http.ServeFile(w, r, staticPath)
+			return
+		} else {
+			log.Printf("Next.js static file not found: %s", staticPath)
+			http.NotFound(w, r)
+			return
+		}
+	}
+	
+	// Handle root path
+	if path == "" {
+		indexPath := filepath.Join(".next", "server", "pages", "index.html")
+		if _, err := os.Stat(indexPath); err == nil {
+			log.Printf("Serving index.html for root path")
+			http.ServeFile(w, r, indexPath)
+			return
+		}
+	}
+	
+	// Try to serve from public directory
+	publicPath := filepath.Join("public", path)
+	if _, err := os.Stat(publicPath); err == nil {
+		log.Printf("Serving public file: %s", publicPath)
+		http.ServeFile(w, r, publicPath)
+		return
+	}
+
+	// Only serve index.html for navigation routes (no file extension)
+	if !strings.Contains(path, ".") {
+		indexPath := filepath.Join(".next", "server", "pages", "index.html")
+		if _, err := os.Stat(indexPath); err == nil {
+			log.Printf("Serving index.html for SPA routing")
+			http.ServeFile(w, r, indexPath)
+			return
+		}
+	}
+
+	// Otherwise, return 404
+	log.Printf("File not found: %s", path)
+	http.NotFound(w, r)
 }
 
 func main() {
@@ -175,8 +243,23 @@ func main() {
 		fmt.Println(string(resp))
 		return
 	}
-	// Start server
-	http.HandleFunc("/ws", geminiWSHandler)
-	fmt.Println("WebSocket server running on ws://localhost:8080/ws")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	
+	// Get port from environment variable, default to 8080
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	
+	// Create a new mux to handle routes properly
+	mux := http.NewServeMux()
+	
+	// Handle WebSocket route first (before static files)
+	mux.HandleFunc("/ws", geminiWSHandler)
+	
+	// Handle all other routes with static file handler
+	mux.HandleFunc("/", staticFileHandler)
+	
+	fmt.Printf("Server running on port %s\n", port)
+	fmt.Printf("WebSocket endpoint: ws://localhost:%s/ws\n", port)
+	log.Fatal(http.ListenAndServe(":"+port, mux))
 } 

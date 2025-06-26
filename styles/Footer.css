@@ -38,7 +38,10 @@
   font-weight: 500;
   transition: color 0.2s;
   letter-spacing: 0.01em;
-  padding: 0.25rem 0;
+  padding: 0.5rem;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
 }
 
 .footer-nav a:hover {
@@ -46,20 +49,96 @@
   text-decoration: underline;
 }
 
+/* Large screens */
+@media (min-width: 1200px) {
+  .footer-container {
+    padding: 0 3rem;
+  }
+  
+  .footer-nav {
+    gap: 2.5rem;
+  }
+}
+
+/* Medium screens */
+@media (max-width: 1024px) {
+  .footer-container {
+    padding: 0 2rem;
+  }
+  
+  .footer-nav {
+    gap: 1.5rem;
+  }
+}
+
+/* Tablet */
 @media (max-width: 800px) {
+  .footer {
+    padding: 1.5rem 0 1rem 0;
+  }
+  
   .footer-container {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
     padding: 0 1rem;
   }
+  
   .footer-nav {
     justify-content: flex-start;
     gap: 1.2rem;
   }
+  
   .footer-copyright {
     text-align: left;
     width: 100%;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .footer {
+    padding: 1rem 0 0.5rem 0;
+  }
+  
+  .footer-container {
+    padding: 0 0.5rem;
+    gap: 0.8rem;
+  }
+  
+  .footer-nav {
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .footer-nav a {
+    padding: 0.3rem;
+    font-size: 0.7rem;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .footer {
+    padding: 0.8rem 0 0.5rem 0;
+  }
+  
+  .footer-container {
+    padding: 0 0.3rem;
+    gap: 0.5rem;
+  }
+  
+  .footer-nav {
+    gap: 0.8rem;
+  }
+  
+  .footer-nav a {
+    padding: 0.2rem;
+    font-size: 0.65rem;
+  }
+  
+  .footer-copyright {
+    font-size: 0.7rem;
   }
 }
 
@@ -68,6 +147,7 @@
   flex-direction: column;
   min-height: 100vh;
 }
+
 main.flex-grow {
   flex: 1;
 } 

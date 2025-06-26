@@ -17,7 +17,6 @@
 
 .platform-why-left {
   flex: 1.2;
-
   padding: 0 3rem;
   display: flex;
   flex-direction: column;
@@ -34,14 +33,15 @@
 }
 
 .platform-why-title {
-  font-size: 2.8rem;
+  font-size: clamp(2rem, 5vw, 2.8rem);
   font-weight: 800;
   margin-bottom: 2rem;
   font-family: 'Merriweather', serif;
+  line-height: 1.2;
 }
 
 .platform-why-desc {
-  font-size: 1.15rem;
+  font-size: clamp(1rem, 2.5vw, 1.15rem);
   color: #eaf2ff;
   line-height: 1.6;
   max-width: 600px;
@@ -56,7 +56,6 @@
   background: #f4f8fb;
   color: #222;
   padding: 2.5rem 3rem;
-
 }
 
 .platform-feature {
@@ -73,7 +72,7 @@
 }
 
 .platform-feature-title {
-  font-size: 1.1rem;
+  font-size: clamp(1rem, 2.5vw, 1.1rem);
   font-weight: 700;
   color: #222;
   margin-bottom: 0.25rem;
@@ -81,17 +80,18 @@
 }
 
 .platform-feature-desc {
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 2vw, 1rem);
   color: #222;
   line-height: 1.5;
 }
+
 .PlatformImage {
     max-width: 100px;
     max-height: auto;
     width: 50%;
     height: auto;
-
 }
+
 .platform-perspectives {
   background: #eaf2ff;
   margin: 0 auto;
@@ -100,17 +100,19 @@
   padding: 4rem 0 4rem 0;
   margin-top: 0;
 }
+
 .platform-perspectives-surtitle {
   font-size: 0.9rem;
 }
 
 .platform-perspectives-title {
   text-align: center;
-  font-size: 2.5rem;
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
   font-family: 'Merriweather', serif;
   font-weight: 800;
   margin-bottom: 2.5rem;
   color: #222;
+  line-height: 1.2;
 }
 
 .platform-tabs {
@@ -118,6 +120,7 @@
   justify-content: center;
   gap: 2.5rem;
   margin-bottom: 2.5rem;
+  flex-wrap: wrap;
 }
 
 .platform-tab {
@@ -129,7 +132,11 @@
   border-bottom: 2px solid transparent;
   transition: border-color 0.2s, color 0.2s;
   cursor: pointer;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
 }
+
 .platform-tab:hover {
   font-size: 0.9rem;
   font-weight: 700;
@@ -164,7 +171,7 @@
 
 .platform-perspectives-subtitle {
   font-family: sans-serif;
-  font-size: 1.1rem;
+  font-size: clamp(1rem, 2.5vw, 1.1rem);
   font-weight: 700;
   color: #222;
   margin-top: 5rem;
@@ -172,7 +179,7 @@
 }
 
 .platform-perspectives-desc {
-  font-size: 0.9rem;
+  font-size: clamp(0.85rem, 2vw, 0.9rem);
   color: #222;
   margin-bottom: 1.5rem;
   line-height: 1.6;
@@ -184,6 +191,10 @@
   text-decoration: none;
   font-size: 1.05rem;
   transition: color 0.2s;
+  padding: 0.5rem 0;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
 }
 
 .platform-learn-more:hover {
@@ -237,6 +248,26 @@
   clear: both;
 }
 
+/* Large screens */
+@media (min-width: 1200px) {
+  .platform-why {
+    padding: 5rem 0;
+  }
+  
+  .platform-why-left {
+    padding: 0 4rem;
+  }
+  
+  .platform-why-right {
+    padding: 3rem 4rem;
+  }
+  
+  .platform-perspectives {
+    padding: 5rem 0;
+  }
+}
+
+/* Medium screens */
 @media (max-width: 1100px) {
   .platform-why-left, .platform-why-right {
     float: none;
@@ -246,49 +277,168 @@
     min-height: unset;
     padding: 2rem 1rem;
   }
+  
   .platform-why-right {
     grid-template-columns: 1fr;
-    gap: 2rem 0;
+    gap: 1.5rem;
+  }
+  
+  .platform-perspectives-content {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .platform-perspectives-left {
+    padding-left: 0;
+    text-align: center;
+  }
+  
+  .platform-perspectives-subtitle {
+    margin-top: 2rem;
+  }
+  
+  .platform-perspectives-image {
+    max-width: 100%;
+    min-height: 250px;
   }
 }
 
+/* Tablet */
+@media (max-width: 768px) {
+  .platform-section {
+    padding: 0 0 3rem 0;
+  }
+  
+  .platform-why {
+    flex-direction: column;
+    padding: 3rem 0;
+  }
+  
+  .platform-why-left {
+    padding: 0 2rem 2rem 2rem;
+    text-align: center;
+  }
+  
+  .platform-why-right {
+    padding: 2rem;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .platform-perspectives {
+    padding: 3rem 0;
+  }
+  
+  .platform-perspectives-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .platform-tabs {
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .platform-perspectives-content {
+    padding: 0 2rem;
+  }
+  
+  .platform-perspectives-image {
+    min-height: 200px;
+  }
+}
+
+/* Mobile */
 @media (max-width: 700px) {
   .platform-why-left, .platform-why-right {
-    padding: 1rem 0.5rem;
+    float: none;
+    max-width: 100%;
+    margin: 0 auto;
+    border-radius: 0;
+    min-height: unset;
+    padding: 1.5rem 1rem;
   }
+  
   .platform-why-right {
     grid-template-columns: 1fr;
-    gap: 1.5rem 0;
+    gap: 1rem;
   }
+  
   .platform-perspectives-image {
     min-height: 180px;
-    max-width: 100%;
+  }
+  
+  .platform-tabs {
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .platform-tab {
+    font-size: 0.8rem;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .platform-why {
+    padding: 2rem 0;
+  }
+  
+  .platform-why-left {
+    padding: 0 1rem 1.5rem 1rem;
+  }
+  
+  .platform-why-right {
+    padding: 1.5rem 1rem;
+  }
+  
+  .platform-perspectives {
+    padding: 2rem 0;
+  }
+  
+  .platform-perspectives-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .platform-tabs {
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+  }
+  
+  .platform-tab {
+    font-size: 0.75rem;
+  }
+  
+  .platform-perspectives-content {
+    padding: 0 1rem;
+  }
+  
+  .platform-perspectives-image {
+    min-height: 150px;
   }
 }
 
 .get-started {
-  background: rgb(3, 3, 101);
+  background: #062989;
   color: white;
-  padding: 4rem 2rem;
   text-align: center;
-  max-width: 1400px;
-  margin: 0 auto;
+  padding: 3rem 2rem;
+  margin-top: 2rem;
 }
 
 .get-started h3 {
-  font-size: 2.5rem;
-  font-family: 'Merriweather', serif;
-  font-weight: 800;
-  margin-bottom: 1.5rem;
-  line-height: 1.2;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  margin-bottom: 1rem;
+  font-weight: 700;
 }
 
 .get-started p {
-  font-size: 1.2rem;
-  line-height: 1.6;
-  max-width: 800px;
-  margin: 0 auto 2.5rem auto;
-  font-weight: 400;
+  font-size: clamp(1rem, 2.5vw, 1.1rem);
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .get-started p b {
